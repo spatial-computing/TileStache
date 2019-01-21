@@ -164,6 +164,8 @@ def get_tile(filename, coord):
 
     format = db.execute("SELECT value FROM metadata WHERE name='format'").fetchone()
     format = format and format[0] or None
+    if isinstance(format, bytes):
+        format = format.decode()
     mime_type = formats[format]
 
     tile_row = (2**coord.zoom - 1) - coord.row # Hello, Paul Ramsey.
@@ -224,10 +226,10 @@ class Provider:
         """
         mime_type, content = get_tile(self.tileset, coord)
         formats = {
-            'png': 'image/png',
-            'jpg': 'image/jpeg',
-            'json': 'application/json',
-            'pbf': 'application/x-protobuf',
+            'image/png' : 'PNG',
+            'image/jpeg': 'JPEG',
+            'application/json' : 'JSON',
+            'application/x-protobuf' : 'PBF',
             None: None
         }
         return TileResponse(formats[mime_type], content)
@@ -268,8 +270,8 @@ class TileResponse:
     def save(self, out, format):
         if self.format is not None and format != self.format:
             raise Exception('Requested format "%s" does not match tileset format "%s"' % (format, self.format))
-
-        out.write(self.content)
+        if self.content:
+            out.write(self.content)
 
 class Cache:
     """ Cache provider for writing to MBTiles files.

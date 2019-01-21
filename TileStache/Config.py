@@ -124,7 +124,7 @@ class Configuration:
         self.dirpath = dirpath
         self.layers = {}
 
-        self.index = 'text/plain', 'TileStache bellows hello.'
+        self.index = 'text/plain', bytes('TileStache bellows hello.', 'utf8')
 
 class Bounds:
     """ Coordinate bounding box for tiles.

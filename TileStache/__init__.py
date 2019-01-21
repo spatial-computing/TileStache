@@ -377,7 +377,7 @@ class WSGITileServer:
         try:
             layer, coord, ext = splitPathInfo(environ['PATH_INFO'])
         except Core.KnownUnknown as e:
-            return self._response(start_response, 400, str(e))
+            return self._response(start_response, 400, bytes(str(e), 'utf8'))
 
         #
         # WSGI behavior is different from CGI behavior, because we may not want
@@ -392,9 +392,15 @@ class WSGITileServer:
 
         status_code, headers, content = requestHandler2(self.config, path_info, query_string, script_name)
 
-        return self._response(start_response, status_code, bytes(content), headers)
+        if not content:
+            return self._response(start_response, 404)
 
-    def _response(self, start_response, code, content='', headers=None):
+        if isinstance(content, str):
+            content = bytes(content, 'utf8')
+
+        return self._response(start_response, status_code, content, headers)
+
+    def _response(self, start_response, code, content=b'', headers=None):
         """
         """
         headers = headers or Headers([])

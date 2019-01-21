@@ -315,7 +315,7 @@ class Response:
                 if row['__geometry__'] is None:
                     continue
             
-                wkb = bytes(row['__geometry__'])
+                wkb = bytes(row['__geometry__'], 'utf8')
                 prop = dict([(k, v) for (k, v) in row.items()
                              if k not in ('__geometry__', '__id__')])
                 
@@ -446,7 +446,7 @@ def get_features(dbinfo, query, n_try=1):
             assert '__geometry__' in row, 'Missing __geometry__ in feature result'
             assert '__id__' in row, 'Missing __id__ in feature result'
 
-            wkb = bytes(row.pop('__geometry__'))
+            wkb = bytes(row.pop('__geometry__'), 'utf8')
             id = row.pop('__id__')
 
             props = dict((k, v) for k, v in row.items() if v is not None)
