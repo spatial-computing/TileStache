@@ -42,7 +42,7 @@ from os.path import exists
 from sqlite3 import connect as _connect
 
 from ModestMaps.Core import Coordinate
-
+from .Core import TheTileLeftANote
 def create_tileset(filename, name, type, version, description, format, bounds=None):
     """ Create a tileset 1.1 with the given filename and metadata.
 
@@ -269,7 +269,8 @@ class TileResponse:
 
     def save(self, out, format):
         if self.format is not None and format != self.format:
-            raise Exception('Requested format "%s" does not match tileset format "%s"' % (format, self.format))
+            # headers=None, status_code=200, content='', emit_content_type=True
+            raise TheTileLeftANote(status_code=500, content='Requested format "%s" does not match tileset format "%s"' % (format, self.format))
         if self.content:
             out.write(self.content)
 

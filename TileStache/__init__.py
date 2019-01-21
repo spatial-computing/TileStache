@@ -239,9 +239,12 @@ def requestHandler2(config_hint, path_info, query_string=None, script_name=''):
         #
         # Special case for index page.
         #
-        if path_info == '/':
+        if path_info == '/' or path_info == '':
             mimetype, content = getattr(layer.config, 'index', ('text/plain', 'TileStache says hello.'))
             return 200, Headers([('Content-Type', mimetype)]), content
+
+        if path_info == '/favicon.ico':
+            return 404, Headers([]), ''
 
         coord, extension = splitPathInfo(path_info)[1:]
 
@@ -283,7 +286,7 @@ def requestHandler2(config_hint, path_info, query_string=None, script_name=''):
         print('Known unknown!', file=out)
         print(e, file=out)
         print('', file=out)
-        print('\n'.join(Core._rummy()), file=out)
+        # print('\n'.join(Core._rummy()), file=out)
 
         headers['Content-Type'] = 'text/plain'
         status_code, content = 500, out.getvalue().encode('ascii')
@@ -373,6 +376,11 @@ class WSGITileServer:
                 self.config = parseConfig(self.config_path)
             except Exception as e:
                 raise Core.KnownUnknown("Error loading Tilestache config file:\n%s" % str(e))
+        
+        path_info = environ.get('PATH_INFO', None)
+        path_info = '/' + (path_info or '').lstrip('/')
+        if path_info == '' or path_info == '/favicon.ico':
+            return self._response(start_response, 404)
 
         try:
             layer, coord, ext = splitPathInfo(environ['PATH_INFO'])
