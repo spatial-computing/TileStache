@@ -373,6 +373,9 @@ def _parseConfigLayer(layer_dict, config, dirpath):
     if 'tile height' in layer_dict:
         layer_kwargs['tile_height'] = int(layer_dict['tile height'])
 
+    if 'content encoding' in layer_dict:
+        layer_kwargs['content_encoding'] = layer_dict['content encoding']
+
     if 'preview' in layer_dict:
         preview_dict = layer_dict['preview']
 

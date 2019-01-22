@@ -271,7 +271,8 @@ def requestHandler2(config_hint, path_info, query_string=None, script_name=''):
         if layer.allowed_origin:
             headers.setdefault('Access-Control-Allow-Origin', layer.allowed_origin)
 
-        headers.setdefault('Content-Encoding', 'gzip')
+        if layer.content_encoding:
+            headers['Content-Encoding'] = layer.content_encoding
 
         if callback and 'json' in headers['Content-Type']:
             headers['Content-Type'] = 'application/javascript; charset=utf-8'
