@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """tilestache-list.py will list your tiles.
 
 This script is intended to be run directly. This example lists tiles in the area

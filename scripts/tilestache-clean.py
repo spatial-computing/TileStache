@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """tilestache-clean.py will flush your cache.
 
 This script is intended to be run directly. This example cleans the area around

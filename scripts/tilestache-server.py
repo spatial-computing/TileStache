@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """tilestache-server.py will serve your cache.
 
 This script is intended to be run directly from the command line.

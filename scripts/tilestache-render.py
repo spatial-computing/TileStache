@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """tilestache-render.py will warm your cache.
 
 This script is *deprecated* and will be removed in a future TileStache 2.0.

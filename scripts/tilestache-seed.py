@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """tilestache-seed.py will warm your cache.
 
 This script is intended to be run directly. This example seeds the area around
