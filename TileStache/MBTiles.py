@@ -77,7 +77,7 @@ def create_tileset(filename, name, type, version, description, format, bounds=No
     """
 
     if format not in ('png', 'jpg', 'json', 'pbf'):
-        raise Exception('Format must be one of "png", "jpg", "json" or "pbf", not "%s"' % format)
+        raise TheTileLeftANote(status_code=500, content='Format must be one of "png", "jpg", "json" or "pbf", not "%s"' % format)
     
     db = _connect(filename)
 
@@ -210,7 +210,7 @@ class Provider:
         scheme, h, path, q, p, f = urlparse(sethref)
 
         if scheme not in ('file', ''):
-            raise Exception('Bad scheme in MBTiles provider, must be local file: "%s"' % scheme)
+            raise TheTileLeftANote(status_code=500, content='Bad scheme in MBTiles provider, must be local file: "%s"' % scheme)
 
         self.tileset = path
         self.layer = layer
