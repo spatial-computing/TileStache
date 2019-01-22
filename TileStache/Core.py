@@ -791,7 +791,6 @@ def _preview(layer):
                 maxZoom: 20
             }).addTo(map);
         }
-
     //-->
     </script>
 </body>
