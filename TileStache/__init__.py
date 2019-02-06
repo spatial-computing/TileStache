@@ -406,9 +406,6 @@ class WSGITileServer:
 
         status_code, headers, content = requestHandler2(self.config, path_info, query_string, script_name)
 
-        del self.config
-        self.config = None
-        
         if not content:
             return self._response(start_response, 404, headers=headers)
 
