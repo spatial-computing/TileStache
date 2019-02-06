@@ -268,6 +268,7 @@ class Metatile:
 
     def __del__(self):
       gc_collect()
+      del self.buffer
 
 class Layer:
     """ A Layer.
@@ -355,6 +356,10 @@ class Layer:
 
     def __del__(self):
       gc_collect()
+      del self.projection
+      del self.metatile
+      del self.config
+      del self.provider
 
     def name(self):
         """ Figure out what I'm called, return a name if there is one.

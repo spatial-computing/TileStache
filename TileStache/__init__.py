@@ -406,12 +406,15 @@ class WSGITileServer:
 
         status_code, headers, content = requestHandler2(self.config, path_info, query_string, script_name)
 
+        del self.config
+        self.config = None
+        
         if not content:
             return self._response(start_response, 404, headers=headers)
 
         if isinstance(content, str):
             content = bytes(content, 'utf8')
-
+        
         return self._response(start_response, status_code, content, headers)
 
     def _response(self, start_response, code, content=b'', headers=None):

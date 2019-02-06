@@ -218,6 +218,8 @@ class Provider:
         self.layer = layer
 
     def __del__(self):
+        del self.layer
+        self.layer = None
         gc_collect()
 
     @staticmethod
