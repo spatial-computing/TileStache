@@ -43,6 +43,8 @@ from sqlite3 import connect as _connect
 
 from ModestMaps.Core import Coordinate
 from .Core import TheTileLeftANote
+from .GarbageCollector import gc_collect
+
 def create_tileset(filename, name, type, version, description, format, bounds=None):
     """ Create a tileset 1.1 with the given filename and metadata.
 
@@ -215,6 +217,9 @@ class Provider:
         self.tileset = path
         self.layer = layer
 
+    def __del__(self):
+        gc_collect()
+
     @staticmethod
     def prepareKeywordArgs(config_dict):
         """ Convert configured parameters to keyword args for __init__().
@@ -267,12 +272,18 @@ class TileResponse:
         self.format = format
         self.content = content
 
+    def __del__(self):
+        gc_collect()
+
     def save(self, out, format):
         if self.format is not None and format != self.format:
             # headers=None, status_code=200, content='', emit_content_type=True
             raise TheTileLeftANote(status_code=500, content='Requested format "%s" does not match tileset format "%s"' % (format, self.format))
         if self.content:
             out.write(self.content)
+            del self.content
+
+
 
 class Cache:
     """ Cache provider for writing to MBTiles files.
@@ -291,6 +302,9 @@ class Cache:
 
         if not tileset_exists(filename):
             create_tileset(filename, name, 'baselayer', '0', '', format.lower())
+    
+    def __del__(self):
+        gc_collect()
 
     def lock(self, layer, coord, format):
         return

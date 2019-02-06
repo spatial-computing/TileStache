@@ -161,6 +161,8 @@ except ImportError:
 
 from ModestMaps.Core import Coordinate
 
+from .GarbageCollector import gc_collect
+
 _recent_tiles = dict(hash={}, list=[])
 
 def _addRecentTile(layer, coord, format, body, age=300):
@@ -264,6 +266,9 @@ class Metatile:
 
         return coords
 
+    def __del__(self):
+      gc_collect()
+
 class Layer:
     """ A Layer.
 
@@ -347,6 +352,9 @@ class Layer:
         self.jpeg_options = {}
         self.png_options = {}
         self.pixel_effect = None
+
+    def __del__(self):
+      gc_collect()
 
     def name(self):
         """ Figure out what I'm called, return a name if there is one.

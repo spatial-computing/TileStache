@@ -36,12 +36,15 @@ except ImportError:
     from simplejson import loads as json_loads
 
 from ModestMaps.Core import Coordinate
+import gc
+gc.enable()
 
 # dictionary of configuration objects for requestLayer().
 _previous_configs = {}
 
 from . import Core
 from . import Config
+from .GarbageCollector import gc_collect
 
 # regular expression for PATH_INFO
 _pathinfo_pat = re.compile(r'^/?(?P<l>\w.+)/(?P<z>\d+)/(?P<x>-?\d+)/(?P<y>-?\d+)\.(?P<e>\w+)$')
@@ -422,6 +425,10 @@ class WSGITileServer:
         start_response('%d %s' % (code, httplib.responses[code]), headers.items())
         return [content]
 
+    def __del__(self):
+        gc_collect()
+
+        
 def modpythonHandler(request):
     """ Handle a mod_python request.
 
@@ -457,5 +464,4 @@ def modpythonHandler(request):
     request.send_http_header()
 
     request.write(content)
-
     return apache.OK

@@ -80,6 +80,8 @@ from . import PixelEffects
 
 from .py3_compat import reduce, urljoin, urlparse, urlopen
 
+from .GarbageCollector import gc_collect
+
 class Configuration:
     """ A complete site configuration, with a collection of Layer objects.
 
@@ -125,6 +127,10 @@ class Configuration:
         self.layers = {}
 
         self.index = 'text/plain', bytes('TileStache bellows hello.', 'utf8')
+    
+    def __del__(self):
+        gc_collect()
+
 
 class Bounds:
     """ Coordinate bounding box for tiles.

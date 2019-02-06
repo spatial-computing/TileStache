@@ -52,6 +52,8 @@ from time import strptime, time
 from calendar import timegm
 from .py3_compat import reduce
 
+from .GarbageCollector import gc_collect
+
 try:
     from boto.s3.bucket import Bucket as S3Bucket
     from boto.s3.connection import S3Connection
@@ -78,6 +80,9 @@ class Cache:
         self.path = path
         self.reduced_redundancy = reduced_redundancy
         self.policy = policy
+
+    def __del__(self):
+        gc_collect()
 
     def lock(self, layer, coord, format):
         """ Acquire a cache lock for this tile.

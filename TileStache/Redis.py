@@ -53,6 +53,7 @@ except ImportError:
     # at least we can build the documentation
     pass
 
+from .GarbageCollector import gc_collect
 
 def tile_key(layer, coord, format, key_prefix):
     """ Return a tile key string.
@@ -120,3 +121,6 @@ class Cache:
             cache_lifespan = None
 
         self.conn.set(key, body, ex=cache_lifespan)
+
+    def __del__(self):
+        gc_collect()
